@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "331013861127",
+    "project_id": "samadhantra-firbase",
+    "storage_bucket": "samadhantra-firbase.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331013861127:android:8a48b0dbd9081712d95fa2",
+        "android_client_info": {
+          "package_name": "com.app.samadhantra"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8g3o9u4lPpKrK4xFWjYoq5fsaUZKHn0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
