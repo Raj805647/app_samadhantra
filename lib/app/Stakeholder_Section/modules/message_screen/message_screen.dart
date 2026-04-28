@@ -22,7 +22,7 @@ class MessagesScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Obx((){
             if(controller.isLoading.value && controller.chattingLists.isEmpty){
-              return CustomProgressIndicator();
+              return Center(child: CustomProgressIndicator());
             }
             else if(controller.chattingLists.isEmpty){
               Center(child: Text('No Any Chatting Contact'));
@@ -52,7 +52,7 @@ class MessagesScreen extends StatelessWidget {
   PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
       title: "Admin Messages",
-      isBackButton: false,
+      isBackButton: true,
       actions: [
         IconButton(
           onPressed: controller.toggleSearch,
@@ -165,55 +165,15 @@ class MessagesScreen extends StatelessWidget {
 
                   // User Info
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Username
-                        Text(
-                          chattingListData.userName ?? 'Unknown User',
-                          style: const TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 4),
-
-                        // Requirement Name with Icon
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade50,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.grey.shade200),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.description_outlined,
-                                size: 12,
-                                color: Colors.grey.shade600,
-                              ),
-                              const SizedBox(width: 4),
-                              Flexible(
-                                child: Text(
-                                  'requirementName',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey.shade700,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      chattingListData.userName ?? 'Unknown User',
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
 

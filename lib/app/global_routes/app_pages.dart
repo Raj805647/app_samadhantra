@@ -63,6 +63,7 @@ import '../Stakeholder_Section/modules/message_details_screen/message_details_sc
 import '../Stakeholder_Section/modules/message_screen/message_screen.dart';
 import '../Stakeholder_Section/modules/my_agreement/my_agreement_details_screen.dart';
 import '../Stakeholder_Section/modules/my_agreement/my_agreement_screen.dart';
+import '../Stakeholder_Section/modules/my_requirement/my_requirement_details_screen.dart';
 import '../Stakeholder_Section/modules/my_requirement/my_requirement_screen.dart';
 import '../Stakeholder_Section/modules/new_message_screen/new_message_screen.dart';
 import '../Stakeholder_Section/modules/new_ticket_screen/new_ticket_screen.dart';
@@ -401,6 +402,12 @@ class AppPages {
       name: AppRoutes.myRequirements,
       page: () => MyRequirementScreen(),
       binding: MyRequiremntBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.myRequirementsDetails,
+      page: () => MyRequirementDetailsScreen(),
+      binding: MyRequirementDetailsBinding(),
     ),
 
     GetPage(

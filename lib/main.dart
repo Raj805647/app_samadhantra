@@ -4,20 +4,19 @@ import 'package:samadhantra/samadhantra_app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_service.dart';
 
+import 'package:flutter/material.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
+
+  /// ✅ Init notification service
   await NotificationService().init();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   runApp(const MyApp());
 }
-
-/*@pragma("vm:entry-point")
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage msg) async{
-  await Firebase.initializeApp();
-  print("fgfd");
-  print(msg.notification!.title.toString());
-  print(msg.notification!.body.toString());
-  print(msg.data.toString());
-}*/

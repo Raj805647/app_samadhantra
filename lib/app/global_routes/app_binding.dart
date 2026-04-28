@@ -134,6 +134,15 @@ class MyRequiremntBinding extends Bindings {
   }
 }
 
+class MyRequirementDetailsBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<MyRequirementController>(
+          () => MyRequirementController(),
+    );
+  }
+}
+
 class NewMessageBinding extends Bindings {
   @override
   void dependencies() {

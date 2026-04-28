@@ -49,180 +49,183 @@ class MyRequirementScreen extends StatelessWidget {
     _getCategoryColor(requirement.requirementCategory ?? "");
     final statusColor = _getStatusColor(requirement.status ?? "");
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-
-          /// Header
-          Row(
-            children: [
-              Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  color: categoryColor.withOpacity(.15),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  _getCategoryIcon(requirement.requirementCategory ?? ""),
-                  color: categoryColor,
-                  size: 22,
-                ),
-              ),
-              const SizedBox(width: 10),
-
-              /// Title
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      requirement.requirementCategory ?? "Uncategorized",
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      _formatDate(requirement.createdAt ?? ""),
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey[500],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              /// Status
-              Container(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: statusColor.withOpacity(.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  requirement.status?.toUpperCase() ?? "",
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: statusColor,
+    return InkWell(
+      onTap: ()=> Get.toNamed(AppRoutes.myRequirementsDetails, arguments: requirement),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.08),
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+      
+            /// Header
+            Row(
+              children: [
+                Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    color: categoryColor.withOpacity(.15),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    _getCategoryIcon(requirement.requirementCategory ?? ""),
+                    color: categoryColor,
+                    size: 22,
                   ),
                 ),
-              )
-            ],
-          ),
-
-          const SizedBox(height: 8),
-
-          /// Problem Description
-          if (requirement.problemDescription?.isNotEmpty == true)
-            Text(
-              requirement.problemDescription!,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 13,
-                color: Colors.grey[700],
-                height: 1.4,
-              ),
+                const SizedBox(width: 10),
+      
+                /// Title
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        requirement.requirementCategory ?? "Uncategorized",
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        _formatDate(requirement.createdAt ?? ""),
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.grey[500],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+      
+                /// Status
+                Container(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: statusColor.withOpacity(.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    requirement.status?.toUpperCase() ?? "",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: statusColor,
+                    ),
+                  ),
+                )
+              ],
             ),
-
-          const SizedBox(height: 10),
-
-          /// Info Row
-          Wrap(
-            spacing: 10,
-            runSpacing: 6,
-            children: [
-              if (requirement.preferredLocation != null)
-                _miniInfo(Icons.location_on,
-                    requirement.preferredLocation!, Colors.blue),
-
-              if (requirement.timeline?.isNotEmpty == true)
-                _miniInfo(
-                    Icons.calendar_today, requirement.timeline!, Colors.orange),
-
-              if (requirement.budgetRange?.isNotEmpty == true)
-                _miniInfo(Icons.currency_rupee,
-                    requirement.budgetRange!, Colors.green),
-            ],
-          ),
-
-          const SizedBox(height: 12),
-
-          /// Action Buttons
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-
-              /// Update
-              InkWell(
-                onTap: () {
-                  Get.toNamed(
-                    AppRoutes.postRequirementScreen,
-                    arguments: requirement,
-                  );
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.edit, size: 16, color: AppColors.appColor),
-                    const SizedBox(width: 4),
-                    Text(
-                      "Update",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppColors.appColor,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  ],
+      
+            const SizedBox(height: 8),
+      
+            /// Problem Description
+            if (requirement.problemDescription?.isNotEmpty == true)
+              Text(
+                requirement.problemDescription!,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey[700],
+                  height: 1.4,
                 ),
               ),
-
-              const SizedBox(width: 18),
-
-              /// Delete
-              InkWell(
-                onTap: () =>
-                    _showDeleteConfirmation(Get.context!, requirement),
-                child: Row(
-                  children: [
-                    Icon(Icons.delete_outline,
-                        size: 16, color: Colors.red[700]),
-                    const SizedBox(width: 4),
-                    Text(
-                      "Delete",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.red[700],
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  ],
+      
+            const SizedBox(height: 10),
+      
+            /// Info Row
+            Wrap(
+              spacing: 10,
+              runSpacing: 6,
+              children: [
+                if (requirement.preferredLocation != null)
+                  _miniInfo(Icons.location_on,
+                      requirement.preferredLocation!, Colors.blue),
+      
+                if (requirement.timeline?.isNotEmpty == true)
+                  _miniInfo(
+                      Icons.calendar_today, requirement.timeline!, Colors.orange),
+      
+                if (requirement.budgetRange?.isNotEmpty == true)
+                  _miniInfo(Icons.currency_rupee,
+                      requirement.budgetRange!, Colors.green),
+              ],
+            ),
+      
+            const SizedBox(height: 12),
+      
+            /// Action Buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+      
+                /// Update
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      AppRoutes.postRequirementScreen,
+                      arguments: requirement,
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.edit, size: 16, color: AppColors.appColor),
+                      const SizedBox(width: 4),
+                      Text(
+                        "Update",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.appColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          )
-        ],
+      
+                const SizedBox(width: 18),
+      
+                /// Delete
+                InkWell(
+                  onTap: () =>
+                      _showDeleteConfirmation(Get.context!, requirement),
+                  child: Row(
+                    children: [
+                      Icon(Icons.delete_outline,
+                          size: 16, color: Colors.red[700]),
+                      const SizedBox(width: 4),
+                      Text(
+                        "Delete",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.red[700],
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -334,7 +337,7 @@ class MyRequirementScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         // Call delete method from controller
-                        controller.deleteRequirement(requirement.id);
+                        controller.deleteRequirement(requirement.id ?? '');
                         Get.back();
                       },
                       style: ElevatedButton.styleFrom(

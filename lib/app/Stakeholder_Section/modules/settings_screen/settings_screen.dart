@@ -62,6 +62,14 @@ class SettingsScreen extends StatelessWidget {
                       onTap: () => Get.toNamed(AppRoutes.myRequirements),
                       trailing: Icons.arrow_forward_ios,
                     ),
+                    _buildSettingItem(
+                      context,
+                      icon: Icons.gavel_outlined,
+                      title: 'My Bids',
+                      subtitle: 'View & manage your submitted bids',
+                      onTap: () => Get.toNamed(AppRoutes.messageScreen),
+                      trailing: Icons.arrow_forward_ios,
+                    )
                   ],
                 ),
 

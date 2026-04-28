@@ -26,7 +26,7 @@ class PostRequirementController extends GetxController {
   final ApiService _apiService = ApiService();
   final ProfileController profileController = Get.put(ProfileController());
 
-  Rx<MyRequirementData> requirementData = MyRequirementData.empty().obs;
+  Rx<MyRequirementData> requirementData = MyRequirementData().obs;
   // Form fields
   RxString selectedStakeholder = 'Startup'.obs;
   RxBool isSubmit = false.obs;
@@ -40,7 +40,7 @@ class PostRequirementController extends GetxController {
 
   @override
   onInit() {
-    requirementData.value = Get.arguments ?? MyRequirementData.empty();
+    requirementData.value = Get.arguments ?? MyRequirementData();
     problemController.text = requirementData.value.problemDescription ?? '';
     outcomeController.text = requirementData.value.expectedOutcome ?? '';
     budgetRangeController.text = requirementData.value.budgetRange ?? '';
@@ -52,8 +52,7 @@ class PostRequirementController extends GetxController {
     selectedUrgency.value = requirementData.value.requirementCategory ?? '';
 
     budgetValue.value = requirementData.value.budgetRange ?? '';
-    selectedEngagementTypes.value = requirementData.value.engagementTypes
-        .toList();
+    selectedEngagementTypes.value = requirementData.value.engagementTypes ?? [];
     super.onInit();
   }
 

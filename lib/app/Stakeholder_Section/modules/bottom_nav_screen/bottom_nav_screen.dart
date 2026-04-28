@@ -34,7 +34,7 @@ class BottomNavScreen extends StatelessWidget {
                     ?  AssignmentsScreen()
                     :  ActiveTargetListScreen(),
 
-                 MessagesScreen(),
+                 // MessagesScreen(),
                 SettingsScreen(),
               ],
             ),

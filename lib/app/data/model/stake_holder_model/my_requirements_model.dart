@@ -21,68 +21,50 @@ class MyRequirementModel {
 }
 
 class MyRequirementData {
-  final String id;
-  final String userId;
-  final String requirementCategory;
-  final String problemDescription;
-  final String expectedOutcome;
-  final String timeline;
-  final String budgetRange;
-  final String preferredLocation;
-  final List<String> engagementTypes;
-  final String status;
-  final String createdAt;
-  final String updatedAt;
+  final String? id;
+  final String? userId;
+  final String? requirementCategory;
+  final String? problemDescription;
+  final String? expectedOutcome;
+  final String? timeline;
+  final String? budgetRange;
+  final String? preferredLocation;
+  final List<String>? engagementTypes;
+  final String? status;
+  final String? createdAt;
+  final String? updatedAt;
 
   MyRequirementData({
-    required this.id,
-    required this.userId,
-    required this.requirementCategory,
-    required this.problemDescription,
-    required this.expectedOutcome,
-    required this.timeline,
-    required this.budgetRange,
-    required this.preferredLocation,
-    required this.engagementTypes,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.userId,
+    this.requirementCategory,
+    this.problemDescription,
+    this.expectedOutcome,
+    this.timeline,
+    this.budgetRange,
+    this.preferredLocation,
+    this.engagementTypes,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
   });
-
-  /// 👇 Empty constructor
-  factory MyRequirementData.empty() {
-    return MyRequirementData(
-      id: '',
-      userId: '',
-      requirementCategory: '',
-      problemDescription: '',
-      expectedOutcome: '',
-      timeline: '',
-      budgetRange: '',
-      preferredLocation: '',
-      engagementTypes: [],
-      status: '',
-      createdAt: '',
-      updatedAt: '',
-    );
-  }
 
   factory MyRequirementData.fromJson(Map<String, dynamic> json) {
     return MyRequirementData(
-      id: json['id'] ?? '',
-      userId: json['user_id'] ?? '',
-      requirementCategory: json['requirement_category'] ?? '',
-      problemDescription: json['problem_description'] ?? '',
-      expectedOutcome: json['expected_outcome'] ?? '',
-      timeline: json['timeline'] ?? '',
-      budgetRange: json['budget_range'] ?? '',
-      preferredLocation: json['preferred_location'] ?? '',
-      engagementTypes: (json['engagement_types'] as List<dynamic>? ?? [])
-          .map((e) => e.toString())
+      id: json['id'],
+      userId: json['user_id'],
+      requirementCategory: json['requirement_category'],
+      problemDescription: json['problem_description'],
+      expectedOutcome: json['expected_outcome'],
+      timeline: json['timeline'],
+      budgetRange: json['budget_range'],
+      preferredLocation: json['preferred_location'],
+      engagementTypes: (json['engagement_types'] as List<dynamic>?)
+          ?.map((e) => e.toString())
           .toList(),
-      status: json['status'] ?? '',
-      createdAt: json['created_at'] ?? '',
-      updatedAt: json['updated_at'] ?? '',
+      status: json['status'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
     );
   }
 }

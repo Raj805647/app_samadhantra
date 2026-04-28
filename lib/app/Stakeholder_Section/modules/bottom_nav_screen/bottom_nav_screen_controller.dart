@@ -33,11 +33,11 @@ class BottomNavController extends GetxController {
       icon: Iconsax.book,
       activeIcon: Iconsax.book_1,
     ),
-    BottomNavItem(
+/*    BottomNavItem(
       label: 'Messages',
       icon: Iconsax.message,
       activeIcon: Iconsax.message,
-    ),
+    ),*/
     BottomNavItem(
       label: 'Profile',
       icon: Iconsax.user,

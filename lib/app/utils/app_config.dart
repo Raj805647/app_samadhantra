@@ -49,7 +49,8 @@ class AppConfig {
   static const String actionBlogList = '/blogs';
   static const String actionEventsData = '/events';
   static const String actionEventsCategoryData = '/event-categories';
-  static const String actionProviderRequesterChatting = '/requirements/chat-sessions/user';
+  static const String actionProviderChatting = '/requirements/chat-sessions/user';
+  static const String actionRequesterChatting = '/requirements/shortlist/provider/requesters';
   static const String actionChangePassword = '/auth/update-password';
   static const String actionSendFeedback = '/contact/';
   static  String actionAssignment(String agreement_id) => '/requirements/agreements/$agreement_id/assignment';

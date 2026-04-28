@@ -57,6 +57,7 @@ class AppRoutes {
   static const serviceProviderNotifications = '/serviceProviderNotifications';
   static const serviceProviderAddService = '/serviceProviderAddService';
   static const myRequirements = '/myRequirements';
+  static const myRequirementsDetails = '/myRequirementsDetails';
   static const updateProfileScreen = '/updateProfileScreen';
   static const faqScreen = '/faqScreen';
   static const blogScreen = '/blogScreen';
