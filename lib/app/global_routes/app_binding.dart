@@ -410,3 +410,10 @@ class AssignmentDetailBindings extends Bindings {
     Get.lazyPut<AssignmentDetailsController>(() => AssignmentDetailsController());
   }
 }
+
+class MyAgreementDetailsBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<MyAgreementController>(() => MyAgreementController());
+  }
+}

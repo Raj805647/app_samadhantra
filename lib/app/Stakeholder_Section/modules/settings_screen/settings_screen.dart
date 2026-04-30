@@ -187,6 +187,7 @@ class SettingsScreen extends StatelessWidget {
                     onPressed: () => showLogoutDialog(
                       onLogout: () async {
                         TokenService.clearAll();
+                        controller.deleteGetDeviceToken();
                         Get.offAllNamed(AppRoutes.login);
                       },
                     ),

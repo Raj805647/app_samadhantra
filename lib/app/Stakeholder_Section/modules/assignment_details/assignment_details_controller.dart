@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -60,9 +62,6 @@ class AssignmentDetailsController extends GetxController {
     }
   }
 
-  /// ---------------------------
-  /// COMMON REVIEW API
-  /// ---------------------------
   Future<void> _submitReview({
     required String endpoint,
     required Map<String, dynamic> body,
@@ -76,30 +75,52 @@ class AssignmentDetailsController extends GetxController {
       isSubmitting(true);
 
       final token = await TokenService.getAccessToken() ?? '';
-
       final url = '${AppConfig.baseUrl}$endpoint';
+
+      /// 🔍 REQUEST LOGS
+      print('🟡 API REQUEST');
+      print('➡️ URL: $url');
+      print('➡️ TOKEN: $token');
+      print('➡️ BODY: $body');
 
       final response = await apiService.post(
         url,
-        data: body,
+        data: jsonEncode(body),
         headers: {
-          'Content-Type': 'application/json', // ✅ fixed
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
 
+      /// 🔍 RESPONSE LOGS
+      print('🟢 API RESPONSE');
+      print('⬅️ STATUS CODE: ${response.statusCode}');
+      print('⬅️ DATA: ${response.data}');
+
       if (response.statusCode == 200) {
-        Get.back(); // close bottom sheet/dialog
+        Get.back();
         Get.snackbar("Success", "Review submitted");
         _resetForm();
+      } else {
+        /// 🔴 NON-200 RESPONSE
+        print('🔴 API ERROR RESPONSE');
+        print('⬅️ STATUS: ${response.statusCode}');
+        print('⬅️ MESSAGE: ${response.statusMessage}');
+        print('⬅️ DATA: ${response.data}');
+        Get.snackbar("Error", "Failed to submit review");
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      /// 🔴 EXCEPTION LOG
+      print('🔴 EXCEPTION OCCURRED');
+      print('Error: $e');
+      print('StackTrace: $stackTrace');
+
       Get.snackbar("Error", "Something went wrong");
+      _resetForm();
     } finally {
-      isSubmitting(false); // ✅ correct placement
+      isSubmitting(false);
     }
   }
-
   /// ---------------------------
   /// REVIEW TYPES
   /// ---------------------------

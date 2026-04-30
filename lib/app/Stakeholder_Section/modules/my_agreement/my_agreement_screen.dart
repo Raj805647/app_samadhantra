@@ -17,21 +17,25 @@ class MyAgreementScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: CustomAppBar(title: 'My Agreements', isBackButton: true),
-      body: Obx(() {
-        if (controller.isLoading.value && controller.agreements.isEmpty) {
-          return const Center(child: CustomProgressIndicator());
-        }
+      body: RefreshIndicator(
+        onRefresh: controller.fetchAgreements,
+        child: Obx(() {
+          if (controller.isLoading.value && controller.agreements.isEmpty) {
+            return const Center(child: CustomProgressIndicator());
+          }
 
-        return ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            _buildCreateAgreementCard(),
-            ...controller.agreements.map(
-              (agreement) => _buildAgreementCard(agreement),
-            ),
-          ],
-        );
-      }),
+          return ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              controller.agreements.value.isEmpty
+              ? _buildCreateAgreementCard() : SizedBox.shrink(),
+              ...controller.agreements.map(
+                (agreement) => _buildAgreementCard(agreement),
+              ),
+            ],
+          );
+        }),
+      ),
     );
   }
 
@@ -213,13 +217,9 @@ class MyAgreementScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: ElevatedButton.icon(
               onPressed: () {
-                (agreement.providerSignature == null)
-                    ? showSignatureDialog(agreement.id ?? '', () {
-                        Get.toNamed(
-                          AppRoutes.myAgreementDetailsScreen,
-                          arguments: agreement,
-                        );
-                      })
+                print('asdfkbsdhafdsvaf=> ${agreement.providerSignature}');
+                 (agreement.providerSignature == null)
+                    ? showSignatureDialog(agreement.id ?? '')
                     : Get.toNamed(
                         AppRoutes.myAgreementDetailsScreen,
                         arguments: agreement,
@@ -266,7 +266,7 @@ class MyAgreementScreen extends StatelessWidget {
     );
   }
 
-  void showSignatureDialog(String agreementId, VoidCallback onSignedSuccess) {
+  void showSignatureDialog(String agreementId) {
     Get.bottomSheet(
       Container(
         padding: const EdgeInsets.all(20),
@@ -329,7 +329,6 @@ class MyAgreementScreen extends StatelessWidget {
                         await controller.signAgreement(agreementId);
 
                         controller.signatureController.clear();
-                        onSignedSuccess();
                         Get.back();
                       } else {
                         Get.snackbar(

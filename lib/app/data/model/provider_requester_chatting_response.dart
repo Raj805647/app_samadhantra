@@ -33,7 +33,8 @@ class ProviderRequesterChattingResponse {
 class ChattingListData {
   ChattingListData({
       this.requirementId, 
-      this.userId, 
+      this.requirementCategory,
+      this.userId,
       this.sessionId, 
       this.accessToken, 
       this.isActive, 
@@ -45,6 +46,7 @@ class ChattingListData {
   ChattingListData.fromJson(dynamic json) {
     requirementId = json['requirement_id'];
     userId = json['user_id'];
+    requirementCategory = json['requirement_category'];
     sessionId = json['session_id'];
     accessToken = json['access_token'];
     isActive = json['is_active'];
@@ -55,6 +57,7 @@ class ChattingListData {
   }
   String? requirementId;
   String? userId;
+  String? requirementCategory;
   String? sessionId;
   String? accessToken;
   bool? isActive;
@@ -67,6 +70,7 @@ class ChattingListData {
     final map = <String, dynamic>{};
     map['requirement_id'] = requirementId;
     map['user_id'] = userId;
+    map['requirement_category'] = requirementCategory;
     map['session_id'] = sessionId;
     map['access_token'] = accessToken;
     map['is_active'] = isActive;

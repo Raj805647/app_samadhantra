@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -542,11 +543,13 @@ class CompleteProfileController extends GetxController {
             }
             resetData();
             Get.offAllNamed(AppRoutes.bottomnavScreen);
+            fetchGetDeviceToken();
           } catch (e) {
             debugPrint('❌ Payment verify error: $e');
             // Still navigate after success; verification can be retried on server
             resetData();
             Get.offAllNamed(AppRoutes.bottomnavScreen);
+            fetchGetDeviceToken();
           }
         },
         onPaymentError: (_) {
@@ -567,6 +570,26 @@ class CompleteProfileController extends GetxController {
       update();
     }
   }
+
+  void fetchGetDeviceToken() async{
+    try{
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+
+      Map<String, dynamic> bodyData = {
+        "token": fcmToken,
+        "platform": "unknown",
+        "device_label": "string"
+      };
+      final response = await _apiService.post(AppConfig.actionGetDeviceToken, data: bodyData);
+      print('adkbfkjbsdakfbds=> ${response.data}');
+      print('adkbfkjbsdakfbds=> ${response.statusCode}');
+
+
+    }catch(error){
+      print('fakvbkjdsabjdsanjkbvb=>$error');
+    }
+  }
+
 
 // ✅ NEW METHOD: Print complete registration model data
   void _printCompleteRegistrationData() {

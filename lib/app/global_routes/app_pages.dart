@@ -481,5 +481,11 @@ class AppPages {
       binding: ActiveTargetListBinding(),
     ),
 
+    GetPage(
+      name: AppRoutes.myAgreementDetailsScreen,
+      page: () => MyAgreementDetailsScreen(),
+      binding: MyAgreementDetailsBinding(),
+    ),
+
   ];
 }

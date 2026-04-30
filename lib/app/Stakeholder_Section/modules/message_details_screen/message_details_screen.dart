@@ -107,7 +107,7 @@ class MessageDetailsScreen extends StatelessWidget {
             arguments: {
               'reqBidId': controller.chattingLists.value.requirementBidId,
               'reqId': controller.chattingLists.value.requirementId,
-              'providerUserID': controller.chattingLists.value.userId,
+              'providerUserID': controller.chattingLists.value.userId ?? '',
             },
           ),
           icon: Icon(Icons.file_copy_outlined),

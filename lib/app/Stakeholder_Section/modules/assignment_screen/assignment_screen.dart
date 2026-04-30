@@ -87,6 +87,9 @@ class AssignmentsScreen extends StatelessWidget {
     double progress = _calculateProgress(start, end);
     String reviewStage = _getReviewStage(progress);
 
+    print('dsknfkdSBDaszcxzcsfb');
+    print(a.createdAt);
+
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

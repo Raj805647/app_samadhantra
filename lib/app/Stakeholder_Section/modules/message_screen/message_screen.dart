@@ -18,13 +18,13 @@ class MessagesScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: _buildAppBar(),
       body: RefreshIndicator(
-        onRefresh: ()=> controller.fetchCurrentTabData(),
+        onRefresh: () => controller.fetchCurrentTabData(),
         child: SingleChildScrollView(
-          child: Obx((){
-            if(controller.isLoading.value && controller.chattingLists.isEmpty){
+          child: Obx(() {
+            if (controller.isLoading.value &&
+                controller.chattingLists.isEmpty) {
               return Center(child: CustomProgressIndicator());
-            }
-            else if(controller.chattingLists.isEmpty){
+            } else if (controller.chattingLists.isEmpty) {
               Center(child: Text('No Any Chatting Contact'));
             }
             return Column(
@@ -42,8 +42,7 @@ class MessagesScreen extends StatelessWidget {
                 ),
               ],
             );
-          },
-          ),
+          }),
         ),
       ),
     );
@@ -59,7 +58,7 @@ class MessagesScreen extends StatelessWidget {
           icon: const Icon(Icons.search, color: AppColors.white),
         ),
         IconButton(
-          onPressed: ()=> controller.fetchCurrentTabData,
+          onPressed: () {},
           icon: const Icon(Icons.more_vert, color: AppColors.white),
         ),
       ],
@@ -82,7 +81,9 @@ class MessagesScreen extends StatelessWidget {
   }
 
   Widget _buildChatCard(ChattingListData chattingListData) {
-    final hasImage = chattingListData.userProfileUrl != null && chattingListData.userProfileUrl!.isNotEmpty;
+    final hasImage =
+        chattingListData.userProfileUrl != null &&
+        chattingListData.userProfileUrl!.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       child: Container(
@@ -120,18 +121,19 @@ class MessagesScreen extends StatelessWidget {
                         backgroundColor: Colors.grey.shade100,
                         backgroundImage: hasImage
                             ? NetworkImage(
-                          'https://api.samadhantra.com${chattingListData.userProfileUrl}',
-                        )
+                                'https://api.samadhantra.com${chattingListData.userProfileUrl}',
+                              )
                             : null,
                         child: !hasImage
                             ? Text(
-                          chattingListData.userName?[0].toUpperCase() ?? '?',
-                          style: const TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.appColor,
-                          ),
-                        )
+                                chattingListData.userName?[0].toUpperCase() ??
+                                    '?',
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.appColor,
+                                ),
+                              )
                             : null,
                       ),
                       // Role Badge
@@ -139,18 +141,29 @@ class MessagesScreen extends StatelessWidget {
                         bottom: 0,
                         right: 0,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: chattingListData.myRole == 'provider'
-                                  ? [Colors.green.shade400, Colors.green.shade700]
-                                  : [Colors.blue.shade400, Colors.blue.shade700],
+                                  ? [
+                                      Colors.green.shade400,
+                                      Colors.green.shade700,
+                                    ]
+                                  : [
+                                      Colors.blue.shade400,
+                                      Colors.blue.shade700,
+                                    ],
                             ),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(color: Colors.white, width: 2),
                           ),
                           child: Text(
-                            chattingListData.myRole == 'provider' ? 'Provider' : 'Requester',
+                            chattingListData.myRole == 'provider'
+                                ? 'Provider'
+                                : 'Requester',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 8,
@@ -165,15 +178,63 @@ class MessagesScreen extends StatelessWidget {
 
                   // User Info
                   Expanded(
-                    child: Text(
-                      chattingListData.userName ?? 'Unknown User',
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          chattingListData.userName ?? 'Unknown User',
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade50,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey.shade200),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.description_outlined,
+                                size: 12,
+                                color: Colors.grey.shade600,
+                              ),
+                              const SizedBox(width: 4),
+                              Flexible(
+                                child: Text(
+                                  (controller
+                                              .requirement
+                                              .value
+                                              .requirementCategory !=
+                                          null)
+                                      ? controller
+                                            .requirement
+                                            .value
+                                            .requirementCategory ?? ''
+                                      : chattingListData.requirementCategory ?? 'Not Available',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 

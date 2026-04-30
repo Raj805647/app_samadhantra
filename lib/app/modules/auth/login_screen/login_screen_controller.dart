@@ -121,7 +121,8 @@ class LoginScreenController extends GetxController {
           await TokenService.saveUserId(userId ?? "");
           await TokenService.saveUserType(userType ?? "");
           _navigateToDashboard();
-          await NotificationService().init();
+          fetchGetDeviceToken();
+          // await NotificationService().init();
         } else {
           CustomSnackBar.error(data['message'] ?? 'Invalid email or password');
         }
@@ -136,7 +137,25 @@ class LoginScreenController extends GetxController {
     }
   }
 
-  // Navigate to appropriate dashboard based on user type
+  void fetchGetDeviceToken() async{
+    try{
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+
+      Map<String, dynamic> bodyData = {
+          "token": fcmToken,
+          "platform": "unknown",
+          "device_label": "string"
+      };
+      final response = await _apiService.post(AppConfig.actionGetDeviceToken, data: bodyData);
+      print('adkbfkjbsdakfbds=> ${response.data}');
+      print('adkbfkjbsdakfbds=> ${response.statusCode}');
+
+
+    }catch(error){
+      print('fakvbkjdsabjdsanjkbvb=>$error');
+    }
+  }
+
   void _navigateToDashboard() {
     // !isPhoneLogin.value ?
     // Get.toNamed(AppRoutes.bottomnavScreen) : Get.toNamed(AppRoutes.otp);

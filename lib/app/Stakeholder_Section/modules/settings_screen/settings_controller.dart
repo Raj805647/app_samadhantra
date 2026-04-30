@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:samadhantra/app/Stakeholder_Section/modules/profile_screen/profile_screen_controller.dart';
 import 'package:samadhantra/app/constant/token_storage_service.dart';
+import 'package:samadhantra/app/data/api_service.dart';
 import 'package:samadhantra/app/utils/app_config.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -96,6 +97,25 @@ isLoading(false);
       );
     }
   }
+
+  void deleteGetDeviceToken() async{
+    ApiService  apiService = ApiService();
+    try{
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+
+      Map<String, dynamic> bodyData = {
+        "token": fcmToken,
+      };
+      final response = await apiService.delete(AppConfig.actionGetDeviceToken, queryParameters: bodyData);
+      print('adkbfkjbsdakfbds=> ${response.data}');
+      print('adkbfkjbsdakfbds=> ${response.statusCode}');
+
+
+    }catch(error){
+      print('fakvbkjdsabjdsanjkbvb=>$error');
+    }
+  }
+
 
   void updatePreferences() {
     Get.snackbar('Success', 'Preferences updated');

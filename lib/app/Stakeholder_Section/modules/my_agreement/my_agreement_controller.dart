@@ -159,7 +159,7 @@ class MyAgreementController extends GetxController {
       );
     }
   }
-
+RxString responseMessage = ''.obs;
   Future<void> signAgreement(String id) async {
     try {
       final userToken = await TokenService.getAccessToken();
@@ -176,14 +176,19 @@ class MyAgreementController extends GetxController {
         },
         body: json.encode({'provider_signature': signatureBase64}),
       );
+      final responseData = json.decode(response.body);
+
       print('adhbafbhfabsdhbfasdjfvh');
       print(url);
       print(response.statusCode);
       print(response.body);
+
+      responseMessage.value = responseData['message'];
       if (response.statusCode == 200 &&
           json.decode(response.body)['status'] == true) {
         await fetchAgreements();
         Get.snackbar('Success', 'Agreement signed successfully');
+        Get.back();
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to sign agreement');

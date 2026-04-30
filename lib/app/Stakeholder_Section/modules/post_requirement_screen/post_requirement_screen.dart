@@ -146,7 +146,7 @@ class PostRequirementScreen extends StatelessWidget {
                     onPressed: () {
                       if (controller.formKey.currentState!.validate()) {
 
-                        if (controller.requirementData.value.id!.isEmpty) {
+                        if (controller.requirementData.value.id == null) {
                           // Create new requirement
                           controller.postRequirementApi(context);
                         } else {
