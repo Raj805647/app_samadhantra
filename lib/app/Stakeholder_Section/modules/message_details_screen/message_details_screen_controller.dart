@@ -21,7 +21,6 @@ class MessageDetailsController extends GetxController {
   RxList<Messages> historyChatList = <Messages>[].obs;
   Rx<ChattingListData> chattingLists = ChattingListData().obs;
   RxString userId = ''.obs;
-  RxString requirementName = ''.obs;
   RxBool isLoading = false.obs;
   RxBool isSocketConnected = false.obs;
   RxBool isSend = false.obs;
@@ -35,7 +34,6 @@ class MessageDetailsController extends GetxController {
     chattingLists.value = Get.arguments ?? chattingLists();
     userId.value = await TokenService.getUserId() ?? '';
     await loadChatHistory();
-     fetchRequirement();
     connectWebSocket();
   }
 
@@ -125,25 +123,29 @@ class MessageDetailsController extends GetxController {
 
   Future<void> loadChatHistory() async {
     try {
+      isLoading(true);
       final url = Uri.parse(
-        "https://api.samadhantra.com/api/chat/history/${chattingLists.value.sessionId}"
+        "${AppConfig.baseUrl}${AppConfig.actionChatHistory}/${chattingLists.value.sessionId}"
         "?token=${chattingLists.value.accessToken}",
       );
       print(url);
-
       final response = await http.get(url);
+      isLoading(false);
+      if(response.statusCode == 200){
+        final data = jsonDecode(response.body);
+        print('akjdbfkjbsadbf=>$data');
 
-      final data = jsonDecode(response.body);
-      print('akjdbfkjbsadbf=>$data');
+        final messages = data["data"]["messages"] ?? [];
 
-      final messages = data["data"]["messages"] ?? [];
+        historyChatList.value = messages
+            .map<Messages>((e) => Messages.fromJson(e))
+            .toList();
 
-      historyChatList.value = messages
-          .map<Messages>((e) => Messages.fromJson(e))
-          .toList();
+        Future.delayed(const Duration(milliseconds: 300), scrollToBottom);
+      }
 
-      Future.delayed(const Duration(milliseconds: 300), scrollToBottom);
     } catch (e) {
+      isLoading(false);
       print("History error: $e");
     }
   }
@@ -167,20 +169,5 @@ class MessageDetailsController extends GetxController {
     socketSubscription?.cancel();
     channel?.sink.close();
     super.onClose();
-  }
-
-  void fetchRequirement() async {
-    try {
-      final response = await apiService.get(
-        AppConfig.getrequirementDetailByIdUrl(
-          chattingLists.value.requirementId,
-        ),
-      );
-      print('akjdfbhsabhfbsda=> ${response.data}');
-      requirementName.value = MyRequirementData.fromJson(response.data['data']).requirementCategory ?? '';
-
-    } catch (error) {
-      print('akdjbfkbsdhbfds=> $error');
-    }
   }
 }

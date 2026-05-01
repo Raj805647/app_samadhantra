@@ -130,8 +130,8 @@ class RegisterScreen extends StatelessWidget {
                               labelText: "Full Name",
                               prefixIcon: Icons.person_outline,
                               controller: controller.nameController,
-                              validator: Validators.required,
                               textInputAction: TextInputAction.next,
+                              validator: (value)=>Validators.name(value,fieldName: 'name'),
                             ),
 
                             SizedBox(height: AppStyle.heightPercent(context, 2)),
@@ -143,8 +143,9 @@ class RegisterScreen extends StatelessWidget {
                               prefixIcon: Icons.email_outlined,
                               controller: controller.emailController,
                               keyboardType: TextInputType.emailAddress,
-                              validator: controller.validateEmail,
                               textInputAction: TextInputAction.next,
+                              validator: (value)=>Validators.email(value),
+
                             ),
 
                             SizedBox(height: AppStyle.heightPercent(context, 2)),
@@ -156,8 +157,8 @@ class RegisterScreen extends StatelessWidget {
                               prefixIcon: Icons.phone_outlined,
                               controller: controller.phoneController,
                               keyboardType: TextInputType.phone,
-                              validator: controller.validatePhone,
                               textInputAction: TextInputAction.next,
+                              validator: (value)=>Validators.mobile(value),
                             ),
 
                             SizedBox(height: AppStyle.heightPercent(context, 2)),
@@ -168,7 +169,6 @@ class RegisterScreen extends StatelessWidget {
                               labelText: "City",
                               prefixIcon: Icons.location_city_outlined,
                               controller: controller.cityController,
-                              validator: Validators.required,
                               textInputAction: TextInputAction.next,
                             ),
 
@@ -180,7 +180,6 @@ class RegisterScreen extends StatelessWidget {
                               labelText: "State",
                               prefixIcon: Icons.map_outlined,
                               controller: controller.stateController,
-                              validator: Validators.required,
                               textInputAction: TextInputAction.next,
                             ),
 
@@ -230,7 +229,7 @@ class RegisterScreen extends StatelessWidget {
                             ),
                           ),
                           TextButton(
-                            onPressed: controller.goToLogin,
+                            onPressed: (){},
                             child: const Text(
                               "Login",
                               style: TextStyle(

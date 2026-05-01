@@ -14,6 +14,9 @@ class CreateRequiredAgreementController extends GetxController {
     exportBackgroundColor: Colors.white,
   );
 
+  RxDouble contractAmount = 0.0.obs;
+  RxDouble remainingAmount = 0.0.obs;
+
   // Text Controllers
   final scopeDescriptionController = TextEditingController();
   final specificationsDeliverablesController = TextEditingController();
@@ -48,6 +51,19 @@ class CreateRequiredAgreementController extends GetxController {
     providerUserID.value = Get.arguments['providerUserID'];
     // contractAmountController.addListener(calculateTotalPayable);
     // applicableTaxesController.addListener(calculateTotalPayable);
+  }
+
+  void calculateRemainingAmount() {
+    final total = double.tryParse(contractAmountController.text) ?? 0;
+
+    final m1 = double.tryParse(milestone1AmountController.text) ?? 0;
+    final m2 = double.tryParse(milestone2AmountController.text) ?? 0;
+    final m3 = double.tryParse(milestone3AmountController.text) ?? 0;
+
+    contractAmount.value = total;
+
+    final used = m1 + m2 + m3;
+    remainingAmount.value = total - used;
   }
 
   @override

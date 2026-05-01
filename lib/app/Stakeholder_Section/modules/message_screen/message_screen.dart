@@ -19,15 +19,16 @@ class MessagesScreen extends StatelessWidget {
       appBar: _buildAppBar(),
       body: RefreshIndicator(
         onRefresh: () => controller.fetchCurrentTabData(),
-        child: SingleChildScrollView(
-          child: Obx(() {
-            if (controller.isLoading.value &&
-                controller.chattingLists.isEmpty) {
-              return Center(child: CustomProgressIndicator());
-            } else if (controller.chattingLists.isEmpty) {
-              Center(child: Text('No Any Chatting Contact'));
-            }
-            return Column(
+        child: Obx(() {
+          print('adkfbkdsjbafafds=>${controller.allChattingLists.isEmpty} ');
+
+          if (controller.isLoading.value) {
+            return Center(child: CustomProgressIndicator());
+          } else if (controller.chattingLists.isEmpty) {
+            Center(child: Text('No Any Chatting Contact'));
+          }
+          return SingleChildScrollView(
+            child: Column(
               children: [
                 _buildSearchBar(),
                 const SizedBox(height: 10),
@@ -41,9 +42,9 @@ class MessagesScreen extends StatelessWidget {
                   },
                 ),
               ],
-            );
-          }),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }

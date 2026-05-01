@@ -18,6 +18,15 @@ class CreateRequiredAgreementScreen extends StatelessWidget {
       appBar: CustomAppBar(
         title: 'Create Require Agreement',
         isBackButton: true,
+        actions: [
+          Obx(() => Padding(
+            padding: const EdgeInsets.only(right: 10,top: 8),
+            child: Text(
+              "₹${controller.remainingAmount.value.toStringAsFixed(0)}",
+              style: const TextStyle(color: Colors.white, fontSize: 12),
+            ),
+          )),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(15),
@@ -212,7 +221,10 @@ class CreateRequiredAgreementScreen extends StatelessWidget {
             prefixIcon: Icons.currency_rupee,
             keyboardType: TextInputType.number,
             // formatter: [FilteringTextInputFormatter.digitsOnly],
-            onChanged: (value) => controller.calculateTotalPayable(),
+            onChanged: (value) {
+              controller.calculateTotalPayable();
+              controller.calculateRemainingAmount(); // 🔥 ADD
+            },
           ),
           const SizedBox(height: 16),
           CustomTextFormField(
@@ -319,6 +331,9 @@ class CreateRequiredAgreementScreen extends StatelessWidget {
             controller: amountController,
             prefixIcon: Icons.currency_rupee,
             keyboardType: TextInputType.number,
+            onChanged: (value) {
+              controller.calculateRemainingAmount(); // 🔥 ADD
+            },
             // formatter: [FilteringTextInputFormatter.digitsOnly],
           ),
           const SizedBox(height: 12),
@@ -514,17 +529,36 @@ class CreateRequiredAgreementScreen extends StatelessWidget {
   }
 
   Future<void> _selectDate(TextEditingController controller) async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime? pickedDate = await showDatePicker(
       context: Get.context!,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
-    if (picked != null) {
-      controller.text = DateFormat('yyyy-MM-dd').format(picked);
-    }
-  }
 
+    if (pickedDate == null) return;
+
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: Get.context!,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (pickedTime == null) return;
+
+    /// 🔥 Combine Date + Time
+    final DateTime finalDateTime = DateTime(
+      pickedDate.year,
+      pickedDate.month,
+      pickedDate.day,
+      pickedTime.hour,
+      pickedTime.minute,
+    );
+
+    /// 🔥 Format with AM/PM
+    final formatted = DateFormat('yyyy-MM-dd hh:mm a').format(finalDateTime);
+
+    controller.text = formatted;
+  }
   void _showTimelinePicker(RxString timelineValue) {
     showModalBottomSheet(
       context: Get.context!,

@@ -4,6 +4,7 @@ import 'package:samadhantra/app/constant/custom_appbar.dart';
 import 'package:samadhantra/app/data/model/my_agreement_response.dart';
 import 'package:signature/signature.dart';
 
+import '../../../utils/app_config.dart';
 import 'my_agreement_controller.dart';
 
 import 'package:flutter/material.dart';
@@ -21,10 +22,7 @@ class MyAgreementDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
-      appBar: CustomAppBar(
-        title: 'Agreement Details',
-        isBackButton: true,
-      ),
+      appBar: CustomAppBar(title: 'Agreement Details', isBackButton: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -35,10 +33,7 @@ class MyAgreementDetailsScreen extends StatelessWidget {
               tween: Tween<double>(begin: 0, end: 1),
               duration: const Duration(milliseconds: 600),
               builder: (context, double value, child) {
-                return Transform.scale(
-                  scale: value,
-                  child: child,
-                );
+                return Transform.scale(scale: value, child: child);
               },
               child: Container(
                 width: double.infinity,
@@ -134,10 +129,7 @@ class MyAgreementDetailsScreen extends StatelessWidget {
                         children: [
                           const Text(
                             'Total Amount',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
                           Text(
                             '₹${agreement.totalPayableAmount?.toStringAsFixed(2) ?? '0'}',
@@ -307,14 +299,14 @@ class MyAgreementDetailsScreen extends StatelessWidget {
               children: [
                 _buildSignatureStatus(
                   'Requester Signature',
-                  agreement.requesterSignature?.isNotEmpty ?? false,
+                  agreement.requesterSignature,
                   'Signed by requester',
                   'Pending signature',
                 ),
                 const SizedBox(height: 12),
                 _buildSignatureStatus(
                   'Provider Signature',
-                  agreement.providerSignature != null,
+                  agreement.providerSignature,
                   'Signed by provider',
                   'Awaiting your signature',
                 ),
@@ -323,7 +315,7 @@ class MyAgreementDetailsScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 12),
                     child: _buildModernDetailRow(
                       'Signed At',
-                      agreement.signedAt!,
+                      agreement.createdAt!,
                       icon: Icons.access_time,
                     ),
                   ),
@@ -333,23 +325,24 @@ class MyAgreementDetailsScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Action Buttons
-              Center(
-                child: SizedBox(
-                  width: 250,
-                  child: OutlinedButton.icon(
-                    onPressed: () => controller.downloadAgreementPdf(agreement.id ?? ''),
-                    icon: const Icon(Icons.picture_as_pdf),
-                    label: const Text('Download PDF'),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      side: BorderSide(color: Colors.blue.shade700),
+            Center(
+              child: SizedBox(
+                width: 250,
+                child: OutlinedButton.icon(
+                  onPressed: () =>
+                      controller.downloadAgreementPdf(agreement.id ?? ''),
+                  icon: const Icon(Icons.picture_as_pdf),
+                  label: const Text('Download PDF'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
+                    side: BorderSide(color: Colors.blue.shade700),
                   ),
                 ),
               ),
+            ),
           ],
         ),
       ),
@@ -388,18 +381,12 @@ class MyAgreementDetailsScreen extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 11,
-              color: Colors.grey.shade600,
-            ),
+            style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -421,10 +408,7 @@ class MyAgreementDetailsScreen extends StatelessWidget {
       builder: (context, double value, child) {
         return Transform.translate(
           offset: Offset(0, 20 * (1 - value)),
-          child: Opacity(
-            opacity: value,
-            child: child,
-          ),
+          child: Opacity(opacity: value, child: child),
         );
       },
       child: Container(
@@ -445,9 +429,7 @@ class MyAgreementDetailsScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Colors.grey.shade200),
-                ),
+                border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
               ),
               child: Row(
                 children: [
@@ -484,12 +466,12 @@ class MyAgreementDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildModernDetailRow(
-      String label,
-      String value, {
-        bool isBold = false,
-        Color? valueColor,
-        required IconData icon,
-      }) {
+    String label,
+    String value, {
+    bool isBold = false,
+    Color? valueColor,
+    required IconData icon,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -526,7 +508,11 @@ class MyAgreementDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildExpandableText(String label, String text, {required IconData icon}) {
+  Widget _buildExpandableText(
+    String label,
+    String text, {
+    required IconData icon,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -551,16 +537,18 @@ class MyAgreementDetailsScreen extends StatelessWidget {
             color: Colors.grey.shade50,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Text(
-            text,
-            style: const TextStyle(height: 1.5),
-          ),
+          child: Text(text, style: const TextStyle(height: 1.5)),
         ),
       ],
     );
   }
 
-  Widget _buildMilestoneProgress(String title, double amount, String timeline, {required double progress}) {
+  Widget _buildMilestoneProgress(
+    String title,
+    double amount,
+    String timeline, {
+    required double progress,
+  }) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -612,7 +600,14 @@ class MyAgreementDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSignatureStatus(String title, bool isSigned, String signedText, String pendingText) {
+  Widget _buildSignatureStatus(
+    String title,
+    String? signaturePath,
+    String signedText,
+    String pendingText,
+  ) {
+    final bool isSigned = signaturePath?.isNotEmpty ?? false;
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -622,45 +617,69 @@ class MyAgreementDetailsScreen extends StatelessWidget {
           color: isSigned ? Colors.green.shade200 : Colors.orange.shade200,
         ),
       ),
-      child: Row(
+      child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: isSigned ? Colors.green : Colors.orange,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              isSigned ? Icons.check : Icons.pending,
-              size: 16,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
+          /// 🔹 Top Row (Status)
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isSigned ? Colors.green : Colors.orange,
+                  shape: BoxShape.circle,
                 ),
-                Text(
-                  isSigned ? signedText : pendingText,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isSigned ? Colors.green.shade700 : Colors.orange.shade700,
-                  ),
+                child: Icon(
+                  isSigned ? Icons.check : Icons.pending,
+                  size: 16,
+                  color: Colors.white,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 12),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      isSigned ? signedText : pendingText,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: isSigned
+                            ? Colors.green.shade700
+                            : Colors.orange.shade700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
+
+          /// 🔹 Signature Image
+          if (isSigned) ...[
+            const SizedBox(height: 10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                "${AppConfig.imageBaseUrl}$signaturePath",
+                height: 80,
+                width: double.infinity,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Text("Failed to load signature");
+                },
+              ),
+            ),
+          ],
         ],
       ),
     );
   }
-
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:samadhantra/app/constant/app_circularprogress_indicator.dart';
 import 'package:samadhantra/app/constant/app_color.dart';
 import 'package:samadhantra/app/global_routes/app_routes.dart';
 import 'package:samadhantra/app/utils/app_config.dart';
@@ -25,26 +26,63 @@ class MessageDetailsScreen extends StatelessWidget {
   Widget _buildChattingList() {
     return Obx(() {
       if (controller.isLoading.value && controller.historyChatList.isEmpty) {
-        return const Center(child: CircularProgressIndicator());
+        return const Center(child: CustomProgressIndicator());
       }
 
-      /// Empty chat state
       if (controller.historyChatList.isEmpty) {
         return _buildEmptyChatState();
       }
 
       return ListView.builder(
         controller: controller.scrollController,
-        padding: EdgeInsets.only(left: 10,right: 5, top: 10, bottom: 60),
+        padding: const EdgeInsets.only(left: 10, right: 5, top: 10, bottom: 60),
         itemCount: controller.historyChatList.length,
         itemBuilder: (context, index) {
           final msg = controller.historyChatList[index];
-          return buildChatCard(message: msg);
+
+          final currentDate = DateTime.parse(msg.createdAt!);
+
+          /// 🔥 Check previous message date
+          DateTime? previousDate;
+          if (index > 0) {
+            previousDate = DateTime.parse(
+                controller.historyChatList[index - 1].createdAt!);
+          }
+
+          /// 🔥 Show header only if date changes
+          bool showHeader = index == 0 ||
+              previousDate == null ||
+              currentDate.day != previousDate.day ||
+              currentDate.month != previousDate.month ||
+              currentDate.year != previousDate.year;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (showHeader)
+                Center(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      getFormattedDateLabel(currentDate),
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ),
+
+              buildChatCard(message: msg),
+            ],
+          );
         },
       );
     });
   }
-
   AppBar _buildAppbar() {
     return AppBar(
       backgroundColor: AppColors.appColor,
@@ -91,7 +129,7 @@ class MessageDetailsScreen extends StatelessWidget {
 
                   /// STATUS
                   Text(
-                    controller.requirementName.value,
+                    controller.chattingLists.value.requirementCategory ?? 'Not Available',
                     style: TextStyle(fontSize: 12, color: Colors.white70),
                   ),
                 ],
@@ -413,6 +451,28 @@ class MessageDetailsScreen extends StatelessWidget {
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
     );
+  }
+
+  String getFormattedDateLabel(DateTime date) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final messageDate = DateTime(date.year, date.month, date.day);
+
+    final difference = today.difference(messageDate).inDays;
+
+    if (difference == 0) return "Today";
+    if (difference == 1) return "Yesterday";
+    if (difference == 2) return "Day before yesterday";
+
+    return "${date.day} ${_monthName(date.month)} ${date.year}";
+  }
+
+  String _monthName(int month) {
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+    return months[month - 1];
   }
 
   String formatChatTime(String? dateTime) {
