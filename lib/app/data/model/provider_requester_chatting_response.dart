@@ -33,6 +33,7 @@ class ProviderRequesterChattingResponse {
 class ChattingListData {
   ChattingListData({
       this.requirementId, 
+      this.isAgreement,
       this.requirementCategory,
       this.userId,
       this.sessionId, 
@@ -45,6 +46,7 @@ class ChattingListData {
 
   ChattingListData.fromJson(dynamic json) {
     requirementId = json['requirement_id'];
+    isAgreement = json['is_agreement'];
     userId = json['user_id'];
     requirementCategory = json['requirement_category'];
     sessionId = json['session_id'];
@@ -57,6 +59,7 @@ class ChattingListData {
   }
   String? requirementId;
   String? userId;
+  bool? isAgreement;
   String? requirementCategory;
   String? sessionId;
   String? accessToken;
@@ -70,6 +73,7 @@ class ChattingListData {
     final map = <String, dynamic>{};
     map['requirement_id'] = requirementId;
     map['user_id'] = userId;
+    map['is_agreement'] = isAgreement;
     map['requirement_category'] = requirementCategory;
     map['session_id'] = sessionId;
     map['access_token'] = accessToken;

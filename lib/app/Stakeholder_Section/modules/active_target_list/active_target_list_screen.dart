@@ -15,7 +15,7 @@ class ActiveTargetListScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'My Target List',
-        isBackButton: false,
+        isBackButton: true,
       ),
       body: Obx(() {
         if (controller.isLoading.value) {

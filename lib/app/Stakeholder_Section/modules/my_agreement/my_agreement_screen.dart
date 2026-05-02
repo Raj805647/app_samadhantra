@@ -27,7 +27,7 @@ class MyAgreementScreen extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              controller.agreements.isNotEmpty
+              controller.agreements.isEmpty
               ? _buildCreateAgreementCard() : SizedBox.shrink(),
               ...controller.agreements.map(
                 (agreement) => _buildAgreementCard(agreement),

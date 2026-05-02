@@ -30,25 +30,11 @@ class BottomNavScreen extends StatelessWidget {
                  RequirementsListScreen(),
 
                 /// CENTER TAB SCREEN SWITCH
-                controller.centerTabIndex.value == 0
-                    ?  AssignmentsScreen()
-                    :  ActiveTargetListScreen(),
+            AssignmentsScreen(),
 
                  // MessagesScreen(),
                 SettingsScreen(),
               ],
-            ),
-
-            /// Floating Bottom Options
-            Positioned(
-              bottom: 20,
-              left: 0,
-              right: 0,
-              child: Obx(
-                    () => controller.showOptions.value
-                    ? _buildBottomOptions()
-                    : const SizedBox.shrink(),
-              ),
             ),
           ],
         ),
@@ -58,25 +44,6 @@ class BottomNavScreen extends StatelessWidget {
   }
 
   /// ================= BOTTOM FLOATING OPTIONS =================
-
-  Widget _buildBottomOptions() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _circleButton(
-          icon: Iconsax.book,
-          label: "My Assign",
-          onTap: () => controller.selectCenterOption(0),
-        ),
-        const SizedBox(width: 40),
-        _circleButton(
-          icon: Iconsax.flag,
-          label: "Target",
-          onTap: () => controller.selectCenterOption(1),
-        ),
-      ],
-    );
-  }
 
   Widget _circleButton({
     required IconData icon,

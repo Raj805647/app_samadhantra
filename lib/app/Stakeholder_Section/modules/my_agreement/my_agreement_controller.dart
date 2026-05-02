@@ -41,7 +41,7 @@ class MyAgreementController extends GetxController {
     try {
       isLoading.value = true;
       final userToken = await TokenService.getAccessToken();
-      final url = Uri.parse('${AppConfig.baseUrl}/requirements/agreements/me');
+      final url = Uri.parse('${AppConfig.baseUrl}/requirements/agreements/me?requirement_id=${reqId.value}');
       final response = await http.get(
         url,
         headers: {

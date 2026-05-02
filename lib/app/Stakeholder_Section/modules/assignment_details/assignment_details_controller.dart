@@ -108,6 +108,7 @@ class AssignmentDetailsController extends GetxController {
         print('⬅️ MESSAGE: ${response.statusMessage}');
         print('⬅️ DATA: ${response.data}');
         Get.snackbar("Error", "Failed to submit review");
+        Get.back();
       }
     } catch (e, stackTrace) {
       /// 🔴 EXCEPTION LOG
@@ -115,7 +116,7 @@ class AssignmentDetailsController extends GetxController {
       print('Error: $e');
       print('StackTrace: $stackTrace');
 
-      Get.snackbar("Error", "Something went wrong");
+      Get.snackbar("Error", e.toString());
       _resetForm();
     } finally {
       isSubmitting(false);

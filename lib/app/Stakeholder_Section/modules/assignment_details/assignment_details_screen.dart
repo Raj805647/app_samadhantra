@@ -1469,17 +1469,40 @@ class AssignmentDetailScreen extends StatelessWidget {
                     onPressed: controller.isSubmitting.value
                         ? null
                         : () {
+                      print("👉 Button Clicked");
+                      print("⭐ Rating: ${controller.rating.value}");
+                      print("📊 Progress: ${controller.progress.value}");
+                      print("👤 Provider Name: ${controller.assignmentDetails.value.providerName}");
+
                       if (controller.rating.value == 0) {
+                        print("❌ Rating not selected");
                         Get.snackbar("Error", "Please select rating");
                         return;
                       }
-                      if(controller.progress.value <= 40 && controller.progress.value >= 80) {
+
+                      /// ✅ Initial Review (0–40)
+                      if (controller.progress.value <= 40) {
+                        print("🟡 Calling submitInitialReview()");
                         controller.submitInitialReview();
-                      }else if(controller.progress.value == 100){
+
+                        /// ✅ Mid / Provider Review (41–99)
+                      } else if (controller.progress.value > 40 &&
+                          controller.progress.value < 100) {
+
+                        if (controller.assignmentDetails.value.providerName!.isEmpty) {
+                          print("🔵 Calling submitFinalProviderReview()");
+                          controller.submitFinalProviderReview();
+                        } else {
+                          print("⚠️ Provider name exists, skipping provider review");
+                        }
+
+                        /// ✅ Final Requester Review (100)
+                      } else if (controller.progress.value == 100) {
+                        print("🟢 Calling submitFinalRequesterReview()");
                         controller.submitFinalRequesterReview();
-                      }else if(controller.assignmentDetails.value.providerName == ''){
-                        controller.submitFinalProviderReview();
                       }
+
+                      print("✅ Action Completed");
                     },                    style: ElevatedButton.styleFrom(
                       padding:
                       const EdgeInsets.symmetric(vertical: 14),

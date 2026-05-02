@@ -16,19 +16,42 @@ class RequirementsListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed(AppRoutes.postRequirementScreen),
-        backgroundColor: AppColors.appColor,
-        elevation: 6,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+        floatingActionButton: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            /// 📢 Announcement Button
+            FloatingActionButton(
+              heroTag: "announcement",
+              mini: true,
+              backgroundColor: Colors.orange,
+              onPressed: () {
+                Get.toNamed(AppRoutes.activeTargetListScreen);
+              },
+              child: const Icon(Icons.campaign, color: Colors.white),
+            ),
+
+            const SizedBox(height: 10),
+
+            /// ➕ Post Requirement Button (Main)
+            FloatingActionButton(
+              heroTag: "post",
+              backgroundColor: AppColors.appColor,
+              elevation: 6,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              onPressed: () {
+                Get.toNamed(AppRoutes.postRequirementScreen);
+              },
+              child: const Icon(
+                Iconsax.add,
+                color: Colors.white,
+                size: 26,
+              ),
+            ),
+          ],
         ),
-        child: const Icon(
-          Iconsax.add,
-          color: Colors.white,
-          size: 26,
-        ),
-      ),
       appBar: CustomAppBar(title: "Requirements", isBackButton: false),
       body: Obx(() {
         if (controller.isLoading.value && controller.requirements.isEmpty) {
