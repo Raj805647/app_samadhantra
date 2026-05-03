@@ -19,20 +19,14 @@ class BottomNavScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-            () => Stack(
+        () => Stack(
           children: [
-
-            /// Screens
             IndexedStack(
               index: controller.currentIndex.value,
               children: [
-                 HomeScreen(),
-                 RequirementsListScreen(),
-
-                /// CENTER TAB SCREEN SWITCH
-            AssignmentsScreen(),
-
-                 // MessagesScreen(),
+                HomeScreen(),
+                RequirementsListScreen(),
+                AssignmentsScreen(),
                 SettingsScreen(),
               ],
             ),
@@ -42,48 +36,6 @@ class BottomNavScreen extends StatelessWidget {
       bottomNavigationBar: Obx(() => _buildBottomNavBar()),
     );
   }
-
-  /// ================= BOTTOM FLOATING OPTIONS =================
-
-  Widget _circleButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              color: AppColors.appColor,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: AppColors.appColor,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.25),
-                  blurRadius: 8,
-                ),
-              ],
-            ),
-            child: Icon(icon, color: Colors.white),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// ================= BOTTOM NAV BAR =================
 
   Widget _buildBottomNavBar() {
     return Container(

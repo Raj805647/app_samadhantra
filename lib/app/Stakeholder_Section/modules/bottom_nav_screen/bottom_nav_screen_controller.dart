@@ -4,20 +4,14 @@ import 'package:iconsax/iconsax.dart';
 import 'package:samadhantra/app/Stakeholder_Section/modules/assignment_screen/assignment_screen_controller.dart';
 import 'package:samadhantra/app/Stakeholder_Section/modules/profile_screen/profile_screen_controller.dart';
 import 'package:samadhantra/app/constant/token_storage_service.dart';
+import 'package:samadhantra/app/data/api_service.dart';
 import 'package:samadhantra/app/data/model/user_data_model.dart';
+import 'package:samadhantra/app/utils/app_config.dart';
 
 class BottomNavController extends GetxController {
   final RxInt currentIndex = 0.obs;
   final RxBool showOptions = false.obs;
   final RxInt centerTabIndex = 0.obs;
-
-  final profileController = Get.put(ProfileController());
-
-  @override
-  onInit()async{
-    profileController.getUserProfile();
-    super.onInit();
-  }
 
   bool get isAssignmentTab => currentIndex.value == 2;
 
@@ -33,11 +27,6 @@ class BottomNavController extends GetxController {
       icon: Iconsax.book,
       activeIcon: Iconsax.book_1,
     ),
-/*    BottomNavItem(
-      label: 'Messages',
-      icon: Iconsax.message,
-      activeIcon: Iconsax.message,
-    ),*/
     BottomNavItem(
       label: 'Profile',
       icon: Iconsax.user,
@@ -49,7 +38,7 @@ class BottomNavController extends GetxController {
     currentIndex.value = index;
 
     if (index == 2) {
-      showOptions.value = true; // show floating buttons
+      showOptions.value = true;
     } else {
       showOptions.value = false;
     }
@@ -58,7 +47,7 @@ class BottomNavController extends GetxController {
   void selectCenterOption(int tab) {
     centerTabIndex.value = tab;
     currentIndex.value = 2;
-    showOptions.value = false; // hide after selection
+    showOptions.value = false;
   }
 }
 

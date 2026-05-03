@@ -13,30 +13,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(375, 812),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (_, __) {
-        return GetMaterialApp(
-          title: 'Samadhantra',
-          debugShowCheckedModeBanner: false,
-
-          // ✅ Decide route ONCE at startup
-          /* initialRoute:PrefService.isFirstTime
-              ? AppRoutes.onboardingScreen
-              : ppPages.routes,*/
-          initialRoute: AppRoutes.splash,
-
-          getPages: AppPages.routes,
-
-          theme: ThemeData(useMaterial3: false,
-            primaryColor: AppColors.appColor,
-            scaffoldBackgroundColor: AppColors.background,
-            textTheme: GoogleFonts.poppinsTextTheme(),
-          ),
-        );
-      },
+    return SafeArea(
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (_, __) {
+          return GetMaterialApp(
+            title: 'Samadhantra',
+            debugShowCheckedModeBanner: false,
+      
+            // ✅ Decide route ONCE at startup
+            /* initialRoute:PrefService.isFirstTime
+                ? AppRoutes.onboardingScreen
+                : ppPages.routes,*/
+            initialRoute: AppRoutes.splash,
+      
+            getPages: AppPages.routes,
+      
+            theme: ThemeData(useMaterial3: false,
+              primaryColor: AppColors.appColor,
+              scaffoldBackgroundColor: AppColors.background,
+              textTheme: GoogleFonts.poppinsTextTheme(),
+            ),
+          );
+        },
+      ),
     );
   }
 }

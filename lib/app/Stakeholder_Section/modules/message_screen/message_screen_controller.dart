@@ -16,8 +16,9 @@ import '../../../utils/app_config.dart';
     final isSearchVisible = false.obs;
     final isLoading = false.obs;
     final userId = ''.obs;
-    Rx<MyRequirementData> requirement = MyRequirementData().obs;
-
+    final requirementId = ''.obs;
+    final requirementCategory = ''.obs;
+    final appBarTitle = ''.obs;
 
     RxList<ChattingListData> allChattingLists = <ChattingListData>[].obs;
     RxList<ChattingListData> chattingLists = <ChattingListData>[].obs;
@@ -26,19 +27,22 @@ import '../../../utils/app_config.dart';
     void onInit() async {
       super.onInit();
       userId.value = await TokenService.getUserId() ?? "";
-      requirement.value = Get.arguments ?? MyRequirementData();
-      final args = Get.arguments;
+      requirementId.value = Get.arguments['requirement_id'];
+      requirementCategory.value = Get.arguments['requirement_category'];
+      appBarTitle.value = Get.arguments['appbar_title'];
 
-      if (args != null && args is MyRequirementData) {
-        requirement.value = args;
-        fetchCurrentTabData();
-      } else {
-        requirement.value = MyRequirementData();
-        fetchRequesterData();
-      }
+     fetchingData();
       searchController.addListener(() {
         searchChats(searchController.text);
       });
+    }
+
+    void fetchingData() async{
+      if (requirementId.value.isNotEmpty && requirementCategory.value.isNotEmpty) {
+        fetchCurrentTabData();
+      } else {
+        fetchRequesterData();
+      }
     }
 
     @override
@@ -52,7 +56,7 @@ import '../../../utils/app_config.dart';
     Future<void> fetchCurrentTabData() async {
       try {
         isLoading(true);
-        final url = '${AppConfig.actionProviderChatting}/${userId.value}?requirement_id=${requirement.value.id}';
+        final url = '${AppConfig.actionProviderChatting}/${userId.value}?requirement_id=${requirementId.value}';
         print('ajfvdsfgdsaf=> $url');
         final response = await apiService.get(url );
         print('akjbfhbsdahfhbsdabf=> ${response.data}');

@@ -593,7 +593,11 @@ class MyRequirementDetailsScreen extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () => Get.toNamed(
           AppRoutes.messageScreen,
-          arguments: requirement,
+          arguments: {
+            'requirement_id': requirement.id,
+            'requirement_category': requirement.requirementCategory,
+            'appbar_title': 'Providers Data',
+          },
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF4A90E2),
@@ -612,18 +616,6 @@ class MyRequirementDetailsScreen extends StatelessWidget {
             const Text(
               'Message Client',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                'Avg. 2h response',
-                style: const TextStyle(fontSize: 11),
-              ),
             ),
           ],
         ),

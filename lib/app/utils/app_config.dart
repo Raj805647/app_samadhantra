@@ -55,6 +55,8 @@ class AppConfig {
   static const String actionSendFeedback = '/contact/';
   static const String actionGetDeviceToken = '/users/me/device-tokens';
   static const String actionChatHistory = '/chat/history';
+  static const String actionDashboard = '/users/me/dashboard-counters';
+  static const String actionActiveAnnouncements = '/requirements/announcements/active';
   static  String actionAssignment(String agreement_id) => '/requirements/agreements/$agreement_id/assignment';
   static  String actionInitialReview(String agreement_id) => '/reviews/agreements/${agreement_id}/reviews/requester/progress';
   static  String actionFinalRequesterReview(String agreement_id) => '/reviews/agreements/${agreement_id}/reviews/requester/final';

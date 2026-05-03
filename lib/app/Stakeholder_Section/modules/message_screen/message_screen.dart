@@ -17,55 +17,54 @@ class MessagesScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: _buildAppBar(),
-      body: RefreshIndicator(
-        onRefresh: () => controller.fetchCurrentTabData(),
-        child: Obx(() {
-          print('adkfbkdsjbafafds=>${controller.allChattingLists.isEmpty} ');
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return Center(child: CustomProgressIndicator());
+        }
+        else if (controller.chattingLists.isEmpty) {
+          return const Center(child: Text('No Any Chatting Contact'));
+        }
 
-          if (controller.isLoading.value) {
-            return Center(child: CustomProgressIndicator());
-          } else if (controller.chattingLists.isEmpty) {
-            Center(child: Text('No Any Chatting Contact'));
-          }
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildSearchBar(),
-                const SizedBox(height: 10),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: controller.chattingLists.length,
-                  itemBuilder: (context, index) {
-                    final data = controller.chattingLists[index];
-                    return _buildChatCard(data);
-                  },
-                ),
-              ],
-            ),
-          );
-        }),
-      ),
+        return RefreshIndicator(
+          onRefresh: () async => controller.fetchingData(),
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(), // 🔥 important
+            children: [
+              _buildSearchBar(),
+              const SizedBox(height: 10),
+              ...List.generate(
+                controller.chattingLists.length,
+                    (index) {
+                  final data = controller.chattingLists[index];
+                  return _buildChatCard(data);
+                },
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 
   PreferredSizeWidget _buildAppBar() {
-    return CustomAppBar(
-      title: "Admin Messages",
-      isBackButton: true,
-      actions: [
-        IconButton(
-          onPressed: controller.toggleSearch,
-          icon: const Icon(Icons.search, color: AppColors.white),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.more_vert, color: AppColors.white),
-        ),
-      ],
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(kToolbarHeight),
+      child: Obx(() => CustomAppBar(
+        title: controller.appBarTitle.value,
+        isBackButton: true,
+        actions: [
+          IconButton(
+            onPressed: controller.toggleSearch,
+            icon: const Icon(Icons.search, color: AppColors.white),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.more_vert, color: AppColors.white),
+          ),
+        ],
+      )),
     );
   }
-
   Widget _buildSearchBar() {
     return Obx(
       () => controller.isSearchVisible.value
@@ -213,15 +212,8 @@ class MessagesScreen extends StatelessWidget {
                               const SizedBox(width: 4),
                               Flexible(
                                 child: Text(
-                                  (controller
-                                              .requirement
-                                              .value
-                                              .requirementCategory !=
-                                          null)
-                                      ? controller
-                                            .requirement
-                                            .value
-                                            .requirementCategory ?? ''
+                                  (controller.requirementCategory.value != '')
+                                      ? controller.requirementCategory.value ?? ''
                                       : chattingListData.requirementCategory ?? 'Not Available',
                                   style: TextStyle(
                                     fontSize: 11,

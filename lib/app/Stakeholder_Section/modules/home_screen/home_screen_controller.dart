@@ -1,30 +1,21 @@
-// lib/app/modules/stakeholder/views/dashboard/controllers/dashboard_controller.dart
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as _apiService;
-import 'package:http/http.dart' as http;
+import 'package:samadhantra/app/Stakeholder_Section/modules/profile_screen/profile_screen_controller.dart';
 import 'package:samadhantra/app/constant/token_storage_service.dart';
-import 'package:samadhantra/app/data/model/stake_requirement_model.dart';
-import 'package:samadhantra/app/global_routes/app_routes.dart';
 import 'package:samadhantra/app/data/api_service.dart';
 import 'package:samadhantra/app/utils/app_config.dart';
 import '../../../constant/custom_snackbar.dart';
 import '../../../data/model/announcements_acitve_list_response.dart';
-import 'dart:convert';
+import '../../../data/model/dashboard_response.dart';
 
 class HomeScreenController extends GetxController {
-  final companyName = 'Tech Innovations Ltd.'.obs;
+  ApiService apiService = ApiService();
+  final profileData = Get.find<ProfileController>();
+
   final userid = ''.obs;
   final RxList<AnnouncementData> recentRequirements = <AnnouncementData>[].obs;
-
-  RxString reqId = ''.obs;
-
-  // Stats
-  final activeProjects = 0.obs;
-  final completedProjects = 0.obs;
-  final inReviewProjects = 0.obs;
-  final totalProposals = 42.obs;
-  final int limit = 10;
+  Rx<DashBoardData> dashBoard = DashBoardData().obs;
+  final unreadNotifications = 0.obs;
 
   RxBool isLoading = false.obs;
 
@@ -34,31 +25,34 @@ class HomeScreenController extends GetxController {
     loadDashboardData();
   }
 
+  void fetchDashboard() async{
+    isLoading.value = true;
+    try {
+      final response = await apiService.get(AppConfig.actionDashboard);
+      if (response.statusCode == 200) {
+        dashBoard.value = DashBoardData.fromJson(response.data['data']);
+        unreadNotifications.value = dashBoard.value.basicCounters?.unreadNotifications ?? 0;
+      }
+    } catch (e) {
+      print('Error loading dashboard: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   Future<void> loadDashboardData() async {
+    fetchDashboard();
     try {
       isLoading.value = true;
       userid.value = await TokenService.getUserId() ?? '';
-
-      final String url =
-          'https://api.samadhantra.com/api/requirements/announcements/active';
-
-      final response = await _apiService.get(Uri.parse(url));
+      final response = await apiService.get(
+        AppConfig.actionActiveAnnouncements,
+      );
       isLoading.value = false;
-      if (response != null && response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        print('adkshbfhsdavfs');
-        print(data);
-        print('askdhbfhvdashyfhasdvhjfvasdbjhfvasbdhb');
-        print((await TokenService.getAccessToken()));
-        if (data['status'] == true) {
-          recentRequirements.value = (data['data'] as List)
-              .map((e) => AnnouncementData.fromJson(e))
-              .toList();
-        } else {
-          CustomSnackBar.error(
-            data['message'] ?? 'Failed to load dashboard data',
-          );
-        }
+      if (response.statusCode == 200) {
+        recentRequirements.value = (response.data['data'] as List)
+            .map((e) => AnnouncementData.fromJson(e))
+            .toList();
       } else {
         CustomSnackBar.error('Server error. Please try again.');
       }
@@ -67,51 +61,6 @@ class HomeScreenController extends GetxController {
       CustomSnackBar.error('Failed to load dashboard data.');
     } finally {
       isLoading.value = false;
-    }
-  }
-
-  void navigateToPostRequirement() {
-    Get.toNamed(AppRoutes.postRequirementScreen);
-  }
-
-  void viewRequirementDetail(String requirementId) {
-    print('akdjfjbkdsbjkfb');
-    print(requirementId);
-    Get.toNamed('/requirementDetails', arguments: requirementId);
-    // Get.toNamed('/stakeholder/requirement-detail/$requirementId');
-  }
-
-  Future<void> submitSelectedBid() async {
-    try {
-      final url =
-          // '${AppConfig.baseUrl}/requirements/admin/${reqId.value}/shortlist';
-          '${AppConfig.baseUrl}/requirements/admin/630a6f3c-64c9-4576-bf4b-5c3713bae592/shortlist';
-
-      final body = {
-        "provider_user_ids": [
-          // userid.value.toString(),
-        "4972cb3e-1d8b-4fa9-8152-e1912f4f44e4",
-        ],
-      };
-
-      print("URL => $url");
-      print("BODY => ${jsonEncode(body)}");
-
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Authorization":
-              "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBzYW1hZGhhbnRyYS5jb20iLCJyb2xlIjoiYWRtaW4iLCJhZG1pbl90eXBlIjoic3VwZXJfYWRtaW4iLCJleHAiOjE3NzU0NjE0NjgsImp0aSI6Ijc4YzZhMmQ3N2U1ZjQ5MWZhZDA4N2I4ZTQ4Zjk3Y2M2In0.ad5inuEfahGiJZpqxaprRFOZIK8a_mBqLPdfmszo8rc",
-        },
-        body: jsonEncode(body),
-      );
-
-      print("Status Code => ${response.statusCode}");
-      print("Response => ${response.body}");
-    } catch (e) {
-      print("ERROR => $e");
     }
   }
 }

@@ -22,10 +22,6 @@ class AssignmentsScreen extends StatelessWidget {
         isBackButton: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_list, color: AppColors.white),
-            onPressed: () => _showFilterDialog(),
-          ),
-          IconButton(
             icon: const Icon(Icons.search, color: AppColors.white),
             onPressed: () => _showSearchBar(),
           ),
@@ -36,20 +32,20 @@ class AssignmentsScreen extends StatelessWidget {
   }
 
   Widget _buildAssignmentsList() {
-    if (controller.isAssignmentLoading.value) {
-      return CustomProgressIndicator();
-    }
     if (controller.agreements.isEmpty) {
       return _buildEmptyState();
     }
 
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      itemCount: controller.agreements.length,
-      itemBuilder: (context, index) {
-        final assignment = controller.agreements[index];
-        return _buildAssignmentCard(assignment);
-      },
+    return RefreshIndicator(
+      onRefresh: () => controller.fetchAssignmentData(),
+      child: ListView.builder(
+        physics: const AlwaysScrollableScrollPhysics(), // important
+        itemCount: controller.agreements.length,
+        itemBuilder: (context, index) {
+          final assignment = controller.agreements[index];
+          return _buildAssignmentCard(assignment);
+        },
+      ),
     );
   }
 
